@@ -135,11 +135,47 @@ list.sort((a,b) => a.imc-b.imc);
 //Mostramos  todos los usuarios ordenados  en la consola desde la persona más saludable a la menos saludable ---> Desafío complementario
 for (var i=0; i<=miembrosFamilia-1;i++){ 
     console.log(list[i])
+    
 }
 
 if (ConsultarPlanNutriconal!= "0"){
     calcularPlanNutricional(ConsultarPlanNutriconal(),ConsultarOpcion())
 } 
+
+//Creamos las tarjetas automáticamente 
+
+let contenedorPersonas = document.getElementById("contenedorPersonas")
+let imagen
+list.forEach ((person)=>{
+    const div =document.createElement("div")
+    div.id = `person${person.number}`
+
+    if(person.sexo =="H"){
+        imagen = `<svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-gender-female" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z"/>
+        </svg>`
+    }
+    else{
+        imagen = `<svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-gender-male" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>
+      </svg>`
+    }
+
+    div.innerHTML = `
+        <div class="card" >
+            ${imagen}
+            <div class="card-body">
+                <h5 class="card-title">${person.nombre}</h5>
+                <p class="card-text">IMC: ${person.imc.toFixed(2)}</p>
+                <p class="card-text">sexo: ${person.sexo}</p>
+                <p class="card-text">peso: ${person.peso} kg</p>
+                <p class="card-text">talla: ${person.talla} m</p>
+                <a href="#" class="btn btn-primary">Agregar plan de salud</a>
+            </div>
+        </div>
+    `
+    contenedorPersonas.append(div)
+})
 
 
 

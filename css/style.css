@@ -10,14 +10,14 @@ body{
     position: relative;
 }
 
-h1{
+/* h1{
     font-size: 100px;
     align-items: center;    
 }
 h2,p{
     margin:1%;
-}
-
+} */
+/* 
 .container{
     position: absolute;
     display: flex;
@@ -28,4 +28,19 @@ h2,p{
     width: 100vw;
     height: 100vh;
     
+} */
+
+svg{
+    width:50%;
+    margin:10px auto;
+    
+}
+.card{
+    width:80%;
+    height:80%;
+    margin: 10px auto;
+}
+
+.btn{
+    margin:0px auto;
 }
