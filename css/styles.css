@@ -1,0 +1,122 @@
+* {
+  margin: 0%;
+}
+
+.item-active {
+  visibility: visible !important;
+  opacity: 1 !important;
+  -webkit-transition: all 0.3 ease-in-out;
+  transition: all 0.3 ease-in-out;
+}
+
+.item-inactive {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  -webkit-transition: all 0.3 ease-in-out;
+  transition: all 0.3 ease-in-out;
+}
+
+body {
+  background-image: url("../media/banner.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.card {
+  background-color: rgba(0, 0, 0, 0.35);
+  border-radius: 25px;
+  width: 100% !important;
+  margin: 15px;
+}
+
+svg {
+  fill: black;
+  width: 100%;
+  /* width: 70px;
+    height: 70px; */
+}
+
+main {
+  border-radius: 25px;
+  background-color: rgba(0, 0, 0, 0.35);
+  padding: 25px;
+}
+
+main #modal-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.3 ease-in-out;
+  transition: all 0.3 ease-in-out;
+}
+
+main #modal-container #modal {
+  width: 30%;
+  height: 80%;
+  background-color: white;
+  border-radius: 25px;
+  padding: 50px;
+}
+
+main #modal-container #modal #Integrantes {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+      -ms-flex-direction: column !important;
+          flex-direction: column !important;
+  -webkit-box-pack: justify !important;
+      -ms-flex-pack: justify !important;
+          justify-content: space-between !important;
+}
+
+main #modal-container #modal #form-user {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+main #modal-container div {
+  color: black;
+  text-shadow: none;
+}
+
+main #modal-container div button {
+  margin: 5px;
+  width: 100%;
+  display: block;
+  color: white;
+}
+/*# sourceMappingURL=styles.css.map */
