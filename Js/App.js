@@ -1,10 +1,12 @@
 /* Funciones */
 function PlopCards(){
-    usuarios.forEach ((person)=>{
-        const div =document.createElement("div")
-        div.id = `person${person.number}`
+    //llamamos al localStorage
+    const usuarios_list= JSON.parse(localStorage.getItem('usuarios'))
+    console.log(usuarios_list)
+    usuarios_list.forEach ((person)=>{
+
     
-        if(person.sexo =="Hombre"){
+        if(person.sexo =="Mujer"){
             imagen = `<svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-gender-female card-img-top" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z"/>
             </svg>`
@@ -14,20 +16,21 @@ function PlopCards(){
             <path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>
           </svg>`
         }
-    
-        div.innerHTML = `
-            <div class="card"  style="width: 18rem;">
-                ${imagen}
-                <div class="card-body" >
-                    <h5 class="card-title">${person.nombre}</h5>
-                    <p class="card-text">IMC: ${person.imc.toFixed(2)}</p>
-                    <p class="card-text">sexo: ${person.sexo}</p>
-                    <p class="card-text">peso: ${person.peso} kg</p>
-                    <p class="card-text">talla: ${person.talla} m</p>
-                    <a href="#" class="btn btn-primary">Agregar plan de salud</a>
-                </div>
-            </div>`
-        contenedorCards.append(div)
+
+        contenedorCards.append(`
+        <div  id="person${person.number}" class="card"  style="width: 18rem;">
+            ${imagen}
+            <div  class="card-body" >
+                <h5 class="card-title">${person.nombre}</h5>
+                <p class="card-text">IMC: ${person.imc.toFixed(2)}</p>
+                <p class="card-text">sexo: ${person.sexo}</p>
+                <p class="card-text">peso: ${person.peso} kg</p>
+                <p class="card-text">talla: ${person.talla} m</p>
+                <p class="card-text">${person.interpretacion}</p>
+                <a href="#" class="btn btn-primary">Agregar plan de salud</a>
+            </div>
+        </div>`)
+
     })
 } 
 
@@ -40,6 +43,7 @@ class users{
         this.nombre= Nombre
         this.peso= Peso
         this.talla= Talla
+        this.imc=0
         this.determinarPuntosCriticos()
         this.calcularImc()
         this.interpretacionIMC()
@@ -70,76 +74,73 @@ class users{
     interpretacionIMC(){
 
         if(this.imc<this.bajopeso){
-            this.interpretacion='Te encuentras en peso muy bajo para tu sexo'
+            this.interpretacion='Te encuentras en peso muy bajo'
         }
         else if(this.imc>=this.bajopeso && this.imc<this.normal){
-            this.interpretacion='Te encuentras en peso normal para tu sexo'
+            this.interpretacion='Te encuentras en peso normal'
         }
         else if(this.imc>=this.normal && this.imc<this.obesidadleve){
-            this.interpretacion='Te encuentras en obesidad leve para tu sexo'
+            this.interpretacion='Te encuentras en obesidad leve'
         }
         else if(this.imc>=this.obesidadleve && this.imc<this.obesidadsevera){
-            this.interpretacion='Te encuentras en obesidad severa para tu sexo'
+            this.interpretacion='Te encuentras en obesidad severa'
         }
         else if(this.imc>=this.obesidadmuysevera){
-            athis.interpretacion='Te encuentras en obesidad muy severa para tu sexo'
+            athis.interpretacion='Te encuentras en obesidad muy severa'
         }
     }
 }
 
 
+/* MAIN */   
 
+/* SELECTORES */
+let contado =1
+let usuarios =[]
 
-/* MAIN */
-
-var contado =1
-var usuarios =[]
-
-const modalContainer = document.getElementById('modal-container')
-const btnComenzar= document.getElementById('btnComenzar')
-const btnAddUsers=document.getElementById('btnAddUsers')
-const btnCancel= document.getElementById('btnCancel')
-const Integrantes =document.getElementById('Integrantes')
-const formUser=document.getElementById('form-user')
-const btnCancelled= document.getElementById('btnCancelled')
-const form =document.getElementById('form-user')
-const UsersTitle= document.getElementById('UsersTitle')
-const selector= document.getElementById('floatingSelect')
-const contenedorCards= document.getElementById('cards-container')
-const containerMain= document.getElementById('main')
+const modalContainer = $('#modal-container')
+const btnComenzar= $('#btnComenzar')
+const btnAddUsers=$('#btnAddUsers')
+const btnCancel= $('#btnCancel')
+const Integrantes =$('#Integrantes')
+const formUser=$('#form-user')
+const btnCancelled= $('#btnCancelled')
+const form =$('#form-user')
+const UsersTitle= $('#UsersTitle')
+const selector= $('#floatingSelect')
+const contenedorCards= $('#cards-container')
+const containerMain= $('#main')
 
 
 
 /* EVENTOS */
-btnComenzar.addEventListener('click', ( ) => {
-    modalContainer.classList.toggle("item-active")
-   
-    console.log("gaa")
+btnComenzar.click( ( ) => {
+    modalContainer.toggleClass("item-active")
 })
 
-btnCancel.addEventListener('click', ( ) => {
-    modalContainer.classList.toggle("item-active")
+btnCancel.click(( ) => {
+    modalContainer.toggleClass("item-active")
     
 })
 
-btnAddUsers.addEventListener('click', ( ) => {
-    Integrantes.classList.toggle("item-inactive")
-    formUser.classList.remove("item-inactive")
-    formUser.classList.add("item-active")
+btnAddUsers.click( ( ) => {
+    Integrantes.toggleClass("item-inactive")
+    formUser.removeClass("item-inactive")
+    formUser.addClass("item-active")
 })
 
-btnCancelled.addEventListener('click', ( ) => {
-    modalContainer.classList.toggle("item-active")
-    Integrantes.classList.toggle("item-inactive")
-    formUser.classList.remove("item-active")
-    formUser.classList.add("item-inactive")
-
+btnCancelled.click( ( ) => {
+    modalContainer.toggleClass("item-active")
+    Integrantes.toggleClass("item-inactive")
+    formUser.removeClass("item-active")
+    formUser.addClass("item-inactive")
+    
     usuarios=[]
     contado=1
-    UsersTitle.textContent = `Creando Usuario 1`
+    UsersTitle.text(`Creando Usuario 1`)
 }) 
 
-form.addEventListener('submit', (event) => {
+form.on ('submit', (event) => {
     event.preventDefault()
     const nombre= inputNombre.value 
     const peso = inputkg.value
@@ -150,18 +151,19 @@ form.addEventListener('submit', (event) => {
     usuarios.push(User)
 
     contado = contado + 1
-    UsersTitle.textContent = `Creando Usuario ${contado}`
+    UsersTitle.text(`Creando Usuario ${contado}`)
     console.log("presionado")
     
     localStorage.setItem('usuarios',JSON.stringify(usuarios))
     
     if (parseInt(selector.value) < contado){
-        modalContainer.classList.toggle("item-active")
-        Integrantes.classList.toggle("item-inactive")
-        formUser.classList.remove("item-active")
-        formUser.classList.add("item-inactive")
+        modalContainer.toggleClass("item-active")
+        Integrantes.toggleClass("item-inactive")
+        formUser.removeClass("item-active")
+        formUser.addClassadd("item-inactive")
+
         PlopCards()
-        containerMain.classList.toggle("item-inactive")
+        containerMain.toggleClass("item-inactive")
     }
     form.reset()
 })
