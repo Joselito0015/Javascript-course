@@ -18,6 +18,7 @@ function PlopCards(){
         }
 
         contenedorCards.append(`
+        <div>
         <div  id="person${person.number}" class="card"  style="width: 18rem;">
             ${imagen}
             <div  class="card-body" >
@@ -29,8 +30,9 @@ function PlopCards(){
                 <p class="card-text">${person.interpretacion}</p>
                 <a href="#" class="btn btn-primary">Agregar plan de salud</a>
             </div>
+        </div>
         </div>`)
-
+        
     })
 } 
 
@@ -113,14 +115,17 @@ const containerMain= $('#main')
 
 
 
+
+
 /* EVENTOS */
 btnComenzar.click( ( ) => {
     modalContainer.toggleClass("item-active")
+    clearInterval(respiracion)
 })
 
 btnCancel.click(( ) => {
     modalContainer.toggleClass("item-active")
-    
+    Integrantes.fadeIn("slow")
 })
 
 btnAddUsers.click( ( ) => {
@@ -156,21 +161,48 @@ form.on ('submit', (event) => {
     
     localStorage.setItem('usuarios',JSON.stringify(usuarios))
     
-    if (parseInt(selector.value) < contado){
+    if (parseInt(selector.val()) < contado){
         modalContainer.toggleClass("item-active")
         Integrantes.toggleClass("item-inactive")
         formUser.removeClass("item-active")
-        formUser.addClassadd("item-inactive")
+        formUser.addClass("item-inactive")
 
         PlopCards()
         containerMain.toggleClass("item-inactive")
     }
-    form.reset()
+    form.trigger("reset")
 })
 
 
 
+// ANIMACIONES
+
+
+
+let respiracion =setInterval(() => {
+    containerMain.animate({
+        'padding': "70px",
+        'opacity': "0.4"
+        },3000, () => {
+        containerMain.animate({
+        'padding': "20px",
+        'opacity': "1"
+        },2000,
+        console.log("gaaa"))})
+        $("#respira").fadeOut(25000)
+},7000)
 
 
 
 
+/* containerMain.hover( ( ) => {
+    containerMain.animate({
+    'padding': "70px"
+    },3000, () => {
+    containerMain.animate({
+    'padding': "20px"
+    },2000,
+    console.log("gaaa"))}
+)})
+ */
+    
