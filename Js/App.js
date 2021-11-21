@@ -17,6 +17,35 @@ function PlopCards(){
           </svg>`
         }
 
+        let colorBtn
+        let planDeSalud
+        switch(person.interpretacion) {
+            case 'Te encuentras en peso muy bajo':
+                colorBtn='bajo'
+                planDeSalud = 'plan subir de peso'
+                break;
+            case 'Te encuentras en peso normal':
+                colorBtn='normal'
+                planDeSalud = 'plan mantenimiento'
+              break;
+            case 'Te encuentras en obesidad leve':
+                colorBtn='leve'
+                planDeSalud = 'plan saludable'
+              break;
+            case 'Te encuentras en obesidad severa':
+                colorBtn='severa'
+                planDeSalud = 'plan bajo de peso'
+              break;
+            case 'Te encuentras en obesidad muy severa':
+                colorBtn='muySevera'
+                planDeSalud = 'plan de emergencia'
+              break;
+
+            default:
+              // code block
+          }
+
+
         contenedorCards.append(`
         <div>
         <div  id="person${person.number}" class="card"  style="width: 18rem;">
@@ -28,13 +57,14 @@ function PlopCards(){
                 <p class="card-text">peso: ${person.peso} kg</p>
                 <p class="card-text">talla: ${person.talla} m</p>
                 <p class="card-text">${person.interpretacion}</p>
-                <a href="#" class="btn btn-primary">Agregar plan de salud</a>
+                <a href="#" class="btn btn-${colorBtn}">${planDeSalud}</a>
             </div>
         </div>
         </div>`)
         
     })
 } 
+
 
 
 /* CLASES */
@@ -88,7 +118,7 @@ class users{
             this.interpretacion='Te encuentras en obesidad severa'
         }
         else if(this.imc>=this.obesidadmuysevera){
-            athis.interpretacion='Te encuentras en obesidad muy severa'
+            this.interpretacion='Te encuentras en obesidad muy severa'
         }
     }
 }
@@ -112,7 +142,7 @@ const UsersTitle= $('#UsersTitle')
 const selector= $('#floatingSelect')
 const contenedorCards= $('#cards-container')
 const containerMain= $('#main')
-
+const body = $('body')
 
 
 
@@ -129,9 +159,35 @@ btnCancel.click(( ) => {
 })
 
 btnAddUsers.click( ( ) => {
+
+    if(parseInt(selector.val())!=0) {
     Integrantes.toggleClass("item-inactive")
     formUser.removeClass("item-inactive")
     formUser.addClass("item-active")
+
+    Toastify({
+        text: `Excelente 😄`,
+        duration: 3000,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        }
+      }).showToast()
+    }
+    else{
+        Toastify({
+            text: `Selecciona un número válido ❌`,
+            duration: 3000,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+            }
+          }).showToast()
+    }
 })
 
 btnCancelled.click( ( ) => {
@@ -146,39 +202,82 @@ btnCancelled.click( ( ) => {
 }) 
 
 form.on ('submit', (event) => {
-    event.preventDefault()
     const nombre= inputNombre.value 
     const peso = inputkg.value
     const talla= inputTalla.value
     const sexo =inputSexo.value
+    event.preventDefault()
 
-    const User= new users(contado, sexo, nombre,peso,talla)
-    usuarios.push(User)
+    if (nombre!= '' && peso!= '' && talla!= '' && sexo!= '0') {
+        
+        const User= new users(contado, sexo, nombre,peso,talla)
+        usuarios.push(User)
 
-    contado = contado + 1
-    UsersTitle.text(`Creando Usuario ${contado}`)
-    console.log("presionado")
+        contado = contado + 1
+        UsersTitle.text(`Creando Usuario ${contado}`)
+        console.log("presionado")
+
+        localStorage.setItem('usuarios',JSON.stringify(usuarios))
+
+        Toastify({
+            text: `Usuario registrado 😄`,
+            duration: 3000,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+          }).showToast()
+
+
+        if (parseInt(selector.val()) < contado){
+            modalContainer.toggleClass("item-active")
+            Integrantes.toggleClass("item-inactive")
+            formUser.removeClass("item-active")
+            formUser.addClass("item-inactive")
+
+            PlopCards()
+            containerMain.toggleClass("item-inactive")
+        
+            Toastify({
+                text: `Resultados rápidos de salud   🤩`,
+                duration: 5000,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                }
+              }).showToast()    
+        
+              body.css({
+                  "box-shadow":"none"
+              })  
+        
+        }
+        form.trigger("reset")
     
-    localStorage.setItem('usuarios',JSON.stringify(usuarios))
-    
-    if (parseInt(selector.val()) < contado){
-        modalContainer.toggleClass("item-active")
-        Integrantes.toggleClass("item-inactive")
-        formUser.removeClass("item-active")
-        formUser.addClass("item-inactive")
 
-        PlopCards()
-        containerMain.toggleClass("item-inactive")
     }
-    form.trigger("reset")
+    else {
+        Toastify({
+            text: `Complete los campos correctamente ❌`,
+            duration: 3000,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+            }
+          }).showToast()
+    }
+
 })
 
 
 
 // ANIMACIONES
-
-
-
 let respiracion =setInterval(() => {
     containerMain.animate({
         'padding': "70px",
@@ -192,17 +291,3 @@ let respiracion =setInterval(() => {
         $("#respira").fadeOut(25000)
 },7000)
 
-
-
-
-/* containerMain.hover( ( ) => {
-    containerMain.animate({
-    'padding': "70px"
-    },3000, () => {
-    containerMain.animate({
-    'padding': "20px"
-    },2000,
-    console.log("gaaa"))}
-)})
- */
-    
