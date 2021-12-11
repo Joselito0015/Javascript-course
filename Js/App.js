@@ -1,3 +1,5 @@
+let productos_generados=[]
+
 /* Funciones */
 function PlopCards(){
     //llamamos al localStorage
@@ -23,24 +25,28 @@ function PlopCards(){
             case 'Te encuentras en peso muy bajo':
                 colorBtn='bajo'
                 planDeSalud = 'plan subir de peso'
+                price=200
                 break;
             case 'Te encuentras en peso normal':
                 colorBtn='normal'
                 planDeSalud = 'plan mantenimiento'
-              break;
+                price=150
+                break;
             case 'Te encuentras en obesidad leve':
                 colorBtn='leve'
                 planDeSalud = 'plan saludable'
-              break;
+                price=180
+                break;
             case 'Te encuentras en obesidad severa':
                 colorBtn='severa'
                 planDeSalud = 'plan bajo de peso'
-              break;
+                price=250
+                break;
             case 'Te encuentras en obesidad muy severa':
                 colorBtn='muySevera'
                 planDeSalud = 'plan de emergencia'
-              break;
-
+                price=350
+                break;
             default:
               // code block
           }
@@ -57,17 +63,49 @@ function PlopCards(){
                 <p class="card-text">peso: ${person.peso} kg</p>
                 <p class="card-text">talla: ${person.talla} m</p>
                 <p class="card-text">${person.interpretacion}</p>
-                <a href="#" class="btn btn-${colorBtn}">${planDeSalud}</a>
+                <a id="Service${person.number}"  href="#" class="btn btn-${colorBtn}">${planDeSalud}</a>
             </div>
         </div>
         </div>`)
         
-    })
+        const Plan= new plan(person.number,price,planDeSalud,person.nombre)
+        productos_generados.push(Plan)
+        console.log(productos_generados)
+        //asignamos evento a cada boton en particular  
+        
+    }
+    )
+    localStorage.setItem('Planes',JSON.stringify(productos_generados))
+
+    
+
 } 
 
+let carrito =[]
 
+const AgregarAlCarrito = (id) =>{
+    const servicio=productos_generados.find((service) => service.id === id )
+    carrito.push(servicio)
+    console.log(carrito)
+    carritoLink.text(`${carrito.length}`)
+}
+
+const RemoverDelCarrito= (id) =>{
+    carrito = carrito.filter(service => service.id != id);
+    console.log(carrito)
+    carritoLink.text(`${carrito.length}`)
+}
 
 /* CLASES */
+class plan{
+    constructor (id,precio,name,person)
+    {   this.id = id
+        this.name = name
+        this.price = precio
+        this.person = person
+    }
+}
+
 class users{
     constructor (Numero,Sexo,Nombre,Peso,Talla)
     {   this.number=Numero
@@ -143,8 +181,7 @@ const selector= $('#floatingSelect')
 const contenedorCards= $('#cards-container')
 const containerMain= $('#main')
 const body = $('body')
-
-
+const carritoLink= $('#CarritoLink')
 
 
 /* EVENTOS */
@@ -238,6 +275,24 @@ form.on ('submit', (event) => {
             formUser.addClass("item-inactive")
 
             PlopCards()
+
+            productos_generados.forEach((service) => {
+
+                $(`#Service${service.id}`).on('click',() => {
+                    if ($(`#Service${service.id}`).hasClass('btn--off')){
+                        RemoverDelCarrito(service.id)
+                        $(`#Service${service.id}`).removeClass('btn--off')
+                    }
+                    else {
+                        AgregarAlCarrito(service.id)
+                        $(`#Service${service.id}`).addClass('btn--off')    
+                    }    
+
+
+                })  
+                console.log(`Service${service.id}`)
+            })
+
             containerMain.toggleClass("item-inactive")
         
             Toastify({
@@ -290,4 +345,55 @@ let respiracion =setInterval(() => {
         console.log("gaaa"))})
         $("#respira").fadeOut(25000)
 },7000)
+
+
+
+//API DE MERCADO PAGO
+let carritoMP=[]
+const pargarBton = $('#pagar')
+
+const finaliarCompra= async () =>{
+
+    const carritoMP =carrito.map ( (service) => {
+        return{
+        title: service.person,
+        description: service.name,
+        pinture_url: "",
+        category_id:service.id,
+        quantity: 1,
+        currency_id: "PEN",
+        unit_price:service.price    
+        }    
+    })
+    console.log(carritoMP)
+
+    const resp = await fetch('https://api.mercadopago.com/checkout/preferences', {
+        method: 'POST',
+        headers: {
+            Authorization: 'Bearer TEST-4518719982931882-121120-5eef2e300edd5893755884e4ea85bc75-441087099'
+        },
+        body: JSON.stringify({
+            items:[{
+                "title": "Dummy Item",
+                "description": "Multicolor Item",
+                "currency_id": "$",
+                "quantity": 1,
+                "unit_price": 10
+              }],
+            back_urls: {
+            }
+        })
+    })
+    const data =await resp.json()
+    window.location.replace(data.init_point)
+}
+
+pargarBton.click(function(){
+    finaliarCompra()
+  });
+  
+
+
+
+
 

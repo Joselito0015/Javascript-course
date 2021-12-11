@@ -43,10 +43,12 @@
         <div>
         <h3 class="float-md-start mb-0">NOFIT</h3>
         <nav class="nav nav-masthead justify-content-center float-md-end">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">Features</a>
-            <a class="nav-link" href="#">Contact</a>
-        </nav>indigo
+            <a  class="nav-link" href="#">
+              <svg id="carrito" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
+              <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg></a>
+            <span id="CarritoLink"> 0</span>  
+        </nav>
         </div>
     </header>
 
@@ -126,13 +128,42 @@
 
       </div>
     </div>
+
+    <div id="list-car" class="container">
+      <div id="list-car-title">
+        <h3> Lista del Plan familiar </h3>
+      </div>
+
+      <div id="list-car-itemContainer">
+        <div id="list-car-item">
+          
+        </div>  
+
+      </div>
+
+      <div id="list-car-summary">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <h4>Total a pagar </h4>
+              
+            </div>
+            <div class="col">
+              <P id="monto"> S/. 0</P>
+            </div>
+            <button id="pagar" type="button" class="btn btn-primary btn-lg">Pagar</button>
+          </div>  
+        </div>
+      </div>
+    </div>
+    
     <footer class="mt-auto text-white-50">
         <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
     </footer>
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="./Js/jQuery.js"></script>
-    <script src="./Js/App.js"></script>
+    <script  src="./Js/jQuery.js"></script>
+    <script defer src="./Js/App.js"></script>
   </body>
 </html>
 
