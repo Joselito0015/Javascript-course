@@ -63,7 +63,7 @@ function PlopCards(){
                 <p class="card-text">peso: ${person.peso} kg</p>
                 <p class="card-text">talla: ${person.talla} m</p>
                 <p class="card-text">${person.interpretacion}</p>
-                <a id="Service${person.number}"  href="#" class="btn btn-${colorBtn}">${planDeSalud}</a>
+                <a id="Service${person.number}" class="btn btn-${colorBtn}">${planDeSalud}</a>
             </div>
         </div>
         </div>`)
@@ -245,7 +245,7 @@ form.on ('submit', (event) => {
     const sexo =inputSexo.value
     event.preventDefault()
 
-    if (nombre!= '' && peso!= '' && talla!= '' && sexo!= '0') {
+    if (nombre!= '' && peso!= '' && talla!= '' && talla>0 && talla <3 && peso>0 && peso <300 && sexo!= '0') {
         
         const User= new users(contado, sexo, nombre,peso,talla)
         usuarios.push(User)
@@ -305,7 +305,9 @@ form.on ('submit', (event) => {
                   background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
               }).showToast()    
-        
+              $("#instructions1").text("1.- Selecciona los planes nutricionales a adquirir")
+              $("#instructions2").text("2.- Dirígete al carrito")          
+              $('#instruction-container').css({"padding":"50px"})
               body.css({
                   "box-shadow":"none"
               })  
@@ -350,50 +352,123 @@ let respiracion =setInterval(() => {
 
 //API DE MERCADO PAGO
 let carritoMP=[]
-const pargarBton = $('#pagar')
+const pagarBton = $('#pagar')
 
 const finaliarCompra= async () =>{
-
-    const carritoMP =carrito.map ( (service) => {
-        return{
-        title: service.person,
-        description: service.name,
-        pinture_url: "",
-        category_id:service.id,
-        quantity: 1,
-        currency_id: "PEN",
-        unit_price:service.price    
-        }    
-    })
-    console.log(carritoMP)
-
-    const resp = await fetch('https://api.mercadopago.com/checkout/preferences', {
-        method: 'POST',
-        headers: {
-            Authorization: 'Bearer TEST-4518719982931882-121120-5eef2e300edd5893755884e4ea85bc75-441087099'
-        },
-        body: JSON.stringify({
-            items:[{
-                "title": "Dummy Item",
-                "description": "Multicolor Item",
-                "currency_id": "$",
-                "quantity": 1,
-                "unit_price": 10
-              }],
-            back_urls: {
-            }
+    
+        const carritoMP =carrito.map ( (service) => {
+            return{
+            title: service.person,
+            description: service.name,
+            pinture_url: "",
+            category_id:service.id,
+            quantity: 1,
+            currency_id: "PEN",
+            unit_price:service.price    
+            }    
         })
-    })
-    const data =await resp.json()
-    window.location.replace(data.init_point)
-}
+        console.log(carritoMP)
 
-pargarBton.click(function(){
+        const resp = await fetch('https://api.mercadopago.com/checkout/preferences', {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer TEST-4518719982931882-121120-5eef2e300edd5893755884e4ea85bc75-441087099'
+            },
+            body: JSON.stringify({
+                items:carritoMP,
+                back_urls: {
+                    success: window.location.href,
+                    failed: window.location.href
+                }
+
+            })
+        })
+        const data =await resp.json()
+        window.location.replace(data.init_point)
+    }
+
+pagarBton.click(function(){
+    if (carrito.length > 0){
     finaliarCompra()
+    }
+    else{
+        Toastify({
+            text: `Carrito vacío   ❌`,
+            duration: 3000,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+            }
+          }).showToast() 
+    }
+
   });
   
 
+//animación carrito
+
+const carritoBtn = $('#carrito')
+const listCar=$('#list')
+const monto= $('#monto')
+const cardsContainer= $('#cards-container')
+const listCarContaine =$('#list-car-itemContainer')
+
+const ActualizarCarrito= () =>{
+    let sum =0
+    carrito.forEach ((service)=>{
+    sum= sum + service.price
+    })
+    monto.text(`S/. ${sum}.00`)
+    listCarContaine.html(" ")
+
+    carrito.forEach(element => {
+        listCarContaine.append(`
+        <div id="list-car-item" class="row">
+        <div class="col">
+            ${element.person}
+        </div>
+        <div class="col">
+            ${element.name}
+      </div>
+      <div class="col">
+            S/.${element.price}.00
+      </div>
+        </div> `)
+
+    });
+
+}
 
 
+carritoBtn.click(function(){
+    listCar.fadeIn(1000)
+    console.log("gaaaaaa")
+    ActualizarCarrito()
+})
+
+//ocultar si se clickea en fuera del div del carrito 
+$(document).mouseup(function(e) 
+{   if ((!listCar.is(e.target) && listCar.has(e.target).length === 0 )) 
+    {
+        listCar.fadeOut(1000);
+    }
+});
 
 
+//animiación de respiración
+
+var seconds = 7;
+var respira = $('#respira');
+
+function incrementSeconds() {
+    if (seconds >0){
+    seconds = seconds - 1;
+    respira.text(`Pero antes respira con nosotros ${seconds}`)
+    }    
+    else{
+    }
+}
+
+var cancel = setInterval(incrementSeconds, 1000);

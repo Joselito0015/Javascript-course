@@ -56,7 +56,7 @@
         <h1>NOFIT</h1>
         <p class="lead">Somos tu mejor aliado para controlar tu salud y la de tu familia</p>
         <p class="lead">Vamos a calcular tu Indice de masa corporal</p>
-        <p id="respira"class="lead"><strong> Pero antes respira con nosotros</strong></p>
+        <p id="respira"class="lead"></p>
         <button id="btnComenzar"type="button" class="btn btn-primary btn-lg">Comenzar</button>
 
         
@@ -123,42 +123,48 @@
 
 
     </main>
-    <div   class="container-fluid">
+    <div id="cont-cards" class="container-fluid">
+      <div id="instruction-container">
+      <h4 id="instructions1"></h4>
+      <h4 id="instructions2"> </h4>
+      </div>
       <div id="cards-container" class="row row-cols-3">
-
       </div>
     </div>
 
-    <div id="list-car" class="container">
-      <div id="list-car-title">
-        <h3> Lista del Plan familiar </h3>
-      </div>
-
-      <div id="list-car-itemContainer">
-        <div id="list-car-item">
-          
-        </div>  
-
-      </div>
-
-      <div id="list-car-summary">
-        <div class="container">
-          <div class="row">
-            <div class="col">
-              <h4>Total a pagar </h4>
-              
-            </div>
-            <div class="col">
-              <P id="monto"> S/. 0</P>
-            </div>
-            <button id="pagar" type="button" class="btn btn-primary btn-lg">Pagar</button>
-          </div>  
+    <div id="list">
+      <div id="list-car" class="container">
+        <div id="list-car-title">
+          <h3> Lista del Plan Familiar </h3>
         </div>
-      </div>
+
+        <div id="list-car-itemContainer">
+          <div id="list-car-item">
+
+          </div>  
+
+        </div>
+
+        <div id="list-car-summary">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <h4>Total a pagar </h4>
+                
+              </div>
+              <div class="col">
+                <P id="monto"> S/. 0</P>
+              </div>
+              <button id="pagar" type="button" class="btn btn-primary btn-lg">Pagar</button>
+            </div>  
+          </div>
+        </div>
     </div>
-    
+  </div>
+
+
     <footer class="mt-auto text-white-50">
-        <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
+        <p>© Copyright Agency and contributors 2021  Designer by Luis Blas</p>
     </footer>
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
