@@ -6,8 +6,6 @@ function PlopCards(){
     const usuarios_list= JSON.parse(localStorage.getItem('usuarios'))
     console.log(usuarios_list)
     usuarios_list.forEach ((person)=>{
-
-    
         if(person.sexo =="Mujer"){
             imagen = `<svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-gender-female card-img-top" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z"/>
@@ -70,21 +68,19 @@ function PlopCards(){
         
         const Plan= new plan(person.number,price,planDeSalud,person.nombre)
         productos_generados.push(Plan)
-        console.log(productos_generados)
-        //asignamos evento a cada boton en particular  
+        console.log(productos_generados) 
         
     }
     )
     localStorage.setItem('Planes',JSON.stringify(productos_generados))
-
-    
-
 } 
 
-let carrito =[]
 
+let carrito =[]
 const AgregarAlCarrito = (id) =>{
-    const servicio=productos_generados.find((service) => service.id === id )
+    //Llamamos a la "base de datos"
+    const productos= JSON.parse(localStorage.getItem('Planes'))
+    const servicio=productos.find((service) => service.id === id )
     carrito.push(servicio)
     console.log(carrito)
     carritoLink.text(`${carrito.length}`)
@@ -333,7 +329,6 @@ form.on ('submit', (event) => {
 })
 
 
-
 // ANIMACIONES
 let respiracion =setInterval(() => {
     containerMain.animate({
@@ -377,7 +372,7 @@ const finaliarCompra= async () =>{
             body: JSON.stringify({
                 items:carritoMP,
                 back_urls: {
-                    success: window.location.href,
+                    success: `${window.location.host}/html/Gracias.html`,
                     failed: window.location.href
                 }
 
@@ -407,8 +402,7 @@ pagarBton.click(function(){
   });
   
 
-//animación carrito
-
+//animación carrito a la lista del carrito
 const carritoBtn = $('#carrito')
 const listCar=$('#list')
 const monto= $('#monto')
@@ -441,14 +435,14 @@ const ActualizarCarrito= () =>{
 
 }
 
-
 carritoBtn.click(function(){
     listCar.fadeIn(1000)
     console.log("gaaaaaa")
     ActualizarCarrito()
 })
 
-//ocultar si se clickea en fuera del div del carrito 
+
+//ocultar si se clickea fuera del div de la lista del carrito 
 $(document).mouseup(function(e) 
 {   if ((!listCar.is(e.target) && listCar.has(e.target).length === 0 )) 
     {
@@ -457,10 +451,9 @@ $(document).mouseup(function(e)
 });
 
 
-//animiación de respiración
-
-var seconds = 7;
-var respira = $('#respira');
+// conteo de animiación de respiración
+let seconds = 7;
+let respira = $('#respira');
 
 function incrementSeconds() {
     if (seconds >0){
@@ -470,5 +463,4 @@ function incrementSeconds() {
     else{
     }
 }
-
-var cancel = setInterval(incrementSeconds, 1000);
+let cancel = setInterval(incrementSeconds, 1000);
